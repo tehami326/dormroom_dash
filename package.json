@@ -1,0 +1,25 @@
+{
+  "name": "dormroom_dash",
+  "version": "1.0.0",
+  "description": "A project where we are making an app to facilitate the accomodation of students who are pursuing higher studies, by providing them their own choice of hostel and PG rooms.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r1shavd/dormroom_dash.git"
+  },
+  "author": "Rishav Das",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r1shavd/dormroom_dash/issues"
+  },
+  "homepage": "https://github.com/r1shavd/dormroom_dash#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6"
+  }
+}

@@ -1,0 +1,8 @@
+# ----
+# The GITIGNORE file
+# ----
+
+database.db
+node_modules/
+scripts/media/room_media/
+docs/
