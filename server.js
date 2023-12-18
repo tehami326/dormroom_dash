@@ -56,22 +56,23 @@ App.get('/', (request, response) => {
 App.get("/rooms", (request, response) => {
 	// Getting the room id if provided
 	const room_id = request.query.id;
-	let data = {};
-	if ((room_id == undefined) && (room_id == null)) {
+	let data = {
+		multiple: false,
+		rooms: [],
+	};
+	if ((room_id == undefined) || (room_id == null)) {
 		// If the room id wasn't provided
 		// Fetching all the rooms from the database
-		DbConn.all("SELECT * FROM rooms;", (error, row) => {
+		DbConn.all("SELECT * FROM rooms;", (error, rows) => {
 			if (error) {
 				// If there occurs an error
 				response.status(500);
 				return response.end("Database error!");
 			} else {
 				// Rendering the page with the fetched room data
-				data = {
-					multiple: true,
-					rooms: row,
-				};
-				return response.render("room", { data: row },);
+				data.multiple = true;
+				data.rooms = rows;
+				return response.render("room", { data: data },);
 			}
 		});
 	} else {
@@ -83,19 +84,18 @@ App.get("/rooms", (request, response) => {
 				return response.end("Database error!");
 			} else {
 			 	try {
-					data = {
-						room: row[0],
-						multiple: false,
-						booking_requests: [],
-					};
+					data.multiple = false;
+					data.rooms = row;
+					data.rooms.media = JSON.parse(data.rooms.media);
 					// Fetching the booking requests for the current room
-					DbConn.all("SELECT * FROM booking_requests WHERE room_id = ?;", [room_id], (error, row) => {
+					DbConn.all("SELECT COUNT(*) FROM booking_requests WHERE room_id = ?;", [room_id], (error, row) => {
 						if (error) {
 							// If there occurs an error
 							response.status(500);
 							return response.end("Database error!");
 						} else {
 							// Rendering back the room info to the user
+							data.rooms.booking_requests = row;
 							return response.render("room", { data: data });
 						}
 					});
