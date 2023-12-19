@@ -7,7 +7,7 @@ The vanillaJs for the frontend responsiveness of the index page of the web app.
 // Adding the onclick event listener to the contact us btn
 try {
 	document.getElementById("send-contact-req-btn").addEventListener("click", (event) => {
-		event.preventDefault();
+		event.preventDefault();    // Preventing the default action (auto-submission of form)
 
 		// Getting the user entered data
 		const customer_msg = document.getElementById("send-contact-req-msg").value;
@@ -16,8 +16,8 @@ try {
 		// Validating the user input
 		if ((customer_msg.length > 49) && (customer_msg.length <= 500)) {
 			if (/^[0-9]{9,11}/.test(customer_contact)) {
-				// If the user input validates
-				// Sending the POST requests
+				// If the user input validates (msg in the range of 50-500, contact number)
+				// Sending the POST request
 				fetch("/", {
 					method: "POST",
 					body: JSON.stringify({
@@ -32,9 +32,11 @@ try {
 					alert(error);
 				});
 			} else {
+				// If the contact number doesn't validates
 				alert("Please enter an appropriate phone number!");
 			}
 		} else {
+			// If the msg doesn't validates
 			alert("Please enter an appropriate message longer than 50 characters and shorter than 500.");
 		}
 	});
