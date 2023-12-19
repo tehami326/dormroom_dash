@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="/media/required/small-icon.jpg">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DormRoom Dash</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+	<!-- The header -->
+	<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img src="/media/required/small-icon.jpg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+				DormRoom Dash
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<br>
+				<form class="d-flex" role="search" method="get" target="/rooms">
+					<input class="form-control me-2" type="search" placeholder="Find Hostel/PG Rooms" aria-label="Search" name="q">
+					<button class="btn btn-outline-success" type="submit">Go</button>
+				</form>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="#">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="/rooms">Rooms</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="#about">About</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="#contact">Report</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!--  -->
+
+	<!-- Featured rooms section (at least 10 ) -->
+	<!-- Rendering using ejs -->
+	<div class="container-fluid">
+		<% data.forEach((element) => { %>
+		<div class="card" style="margin:10px; padding: 0px; width: 18rem; display: inline-block;">
+			<% if ((element.cover_pic == undefined) || (element.cover_pic == null)) { %>
+			<img src="/media/required/room-not-found.jpg" class="card-img-top" alt="Cover pic" style="height: 50%; width: 100%;">
+			<% } else { %>
+			<img src="/media/rooms/<%= element.cover_pic %>" class="card-img-top" alt="Cover pic" style="height: 50%; width: 100%;">
+			<% } %>
+			<div class="card-body">
+				<h5 class="card-title"><%= element.name %></h5>
+				<a href="/rooms?id=<%= element.id %>" class="btn btn-primary">View more</a>
+			</div>
+		</div>
+		<% }); %>
+	</div>
+	<!--  -->
+
+	<!-- The about section -->
+	<div class="container-fluid" id="about" style="border: 1px solid lightgray; border-radius: 5px; position: center; width: 95%; margin-top: 20px; padding: 10px;">
+		<h2>About Dormroom Dash</h2>
+		<p>
+			Welcome to DormRoom Dash, your trusted companion in the exciting journey of finding a home away from home. We understand that the transition to college life can be both thrilling and overwhelming, especially when it comes to securing a comfortable living space. At DormRoom Dash, we're here to simplify that process, making it as seamless as possible for the fresh faces stepping into the world of higher education.
+		</p>
+		<h3>Our Mission</h3>
+		<p>
+			DormRoom Dash was born out of a mission to redefine the way students discover and secure housing facilities. We are committed to providing a platform that eases the search for PGs, hostels, and flats, catering specifically to the needs of those embarking on their academic journey in a new city.
+		</p>
+		<h3>Currently Serving in Greater Noida</h3>
+		<p>
+			As of now, DormRoom Dash proudly serves the Greater Noida region, bringing our unique approach to housing facilities exclusively to this vibrant educational hub.
+		</p>
+		<br>
+		<h3>What Sets Us Apart?</h3>
+		<p>
+			Unlike traditional brokers, DormRoom Dash operates on a philosophy that prioritizes the well-being and financial ease of our users. We believe that the search for a living space should be exciting, not burdened by hidden fees and unnecessary charges. That's why we proudly stand apart as a service that connects students with vacant accommodations without charging our users any fees.
+		</p>
+		<h3>How It Works</h3>
+		<p>
+			Navigating DormRoom Dash is straightforward. Our user-friendly platform allows you to explore a variety of housing options based on your preferences, budget, and location in the Greater Noida region. We've curated a comprehensive database of PGs, hostels, and flats, ensuring that you have a diverse range of choices to make an informed decision.
+		</p>
+		<h3>Our Commitment to You</h3>
+		<p>
+			Our commitment extends beyond just providing a listing service. At DormRoom Dash, we're dedicated to fostering a sense of community and support for students in Greater Noida. We understand the importance of a secure and welcoming environment for academic success, and we strive to facilitate connections that go beyond mere accommodation.
+		</p>
+		<h3>Get Started Today</h3>
+		<p>
+			Embark on your college journey with DormRoom Dash, where finding your ideal living space is an exciting adventure, not a hassle. Join us in creating a community of students in the Greater Noida region who believe in a stress-free and fee-free approach to securing a home during their college years.
+			<br>
+			Welcome to DormRoom Dash – Your First Step to a Home Away From Home in Greater Noida.
+		</p>
+		<a href="#contact">Reach us</a>
+	</div>
+	<!--  -->
+
+	<!-- The contact/report section -->
+	<div class="container-fluid" id="contact" style="border: 1px solid lightgray; border-radius: 5px; position: center; width: 95%; margin-top: 20px; padding: 10px;">
+		<h2>Contact us</h2>
+		<form>
+			<div class="mb-3">
+				<label class="form-label" for="send-contact-req-msg">Message</label>
+				<textarea class="form-control" id="send-contact-req-msg" rows="4" placeholder="Type your message here. It should have more than 50 alphabets, without any usage of special characters." minlength="50" maxlength="500" required></textarea>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="send-contact-req-contact">Your Contact</label>
+				<input type="tel" class="form-control" id="send-contact-req-contact" placeholder="Enter your contact number" required>
+			</div>
+			<button class="btn btn-primary" id="send-contact-req-btn" type="button">Send</button>
+		</form>
+	</div>
+	<!--  -->
+
+	<!-- Scripts requried for boostrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+	<!--  -->
+
+	<!-- Custom required scripts -->
+	<script type="text/javascript" src="/js/index.js"></script>
+	<!--  -->
+</body>
+</html>

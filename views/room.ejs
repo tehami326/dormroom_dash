@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="/media/required/small-icon.jpg">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<% if (data.multiple) { %>
+	<title>Rooms - DormRoom Dash</title>
+	<% } else { %>
+	<title><%= data.rooms.name %></title>
+	<% } %>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+	<!-- The header -->
+	<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">
+				<img src="/media/required/small-icon.jpg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+				DormRoom Dash
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<br>
+				<form class="d-flex" role="search">
+					<input class="form-control me-2" type="search" placeholder="Find Hostel/PG Rooms" aria-label="Search">
+					<button class="btn btn-outline-success" type="submit">Go</button>
+				</form>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="#">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/#about">About</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/#contact">Report</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!--  -->
+
+	<!-- The section where we either display the set of the rooms or the particular room -->
+	<div class="container mt-5">
+		<% if (data.multiple) { %>
+		<% data.rooms.forEach(element => { %>
+		<div class="card" style="margin:10px; padding: 0px; width: 18rem; display: inline-block;">
+			<% if ((element.cover_pic == undefined) || (element.cover_pic == null)) { %>
+			<img src="/media/required/room-not-found.jpg" class="card-img-top" alt="Cover pic" style="height: 50%; width: 100%;">
+			<% } else { %>
+			<img src="/media/rooms/<%= element.cover_pic %>" class="card-img-top" alt="Cover pic" style="height: 50%; width: 100%;">
+			<% } %>
+			<div class="card-body">
+				<h5 class="card-title"><%= element.name %></h5>
+				<a href="/rooms?id=<%= element.id %>" class="btn btn-primary">View more</a>
+			</div>
+		</div>
+		<% }); %>
+		<% } else { %>
+		<div class="container">
+			<!-- The images and media for the room -->
+			<div id="carouselExampleIndicators" class="carousel slide" style="width: 750px;">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				</div>
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="/media/rooms/<%= data.rooms.cover_pic %>" class="d-block" alt="..." style="height: 500px; width: 750px;">
+					</div>
+					<% data.rooms.media.forEach(element => { %>
+					<div class="carousel-item">
+						<img src="/media/rooms/<%= element %>" class="d-block" alt="..." style="height: 500px; width: 750px;">
+					</div>
+					<% }); %>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+			<!--  -->
+
+			<!-- The main body for the room template -->
+			<h1 class="display-6"><%= data.rooms.name %></h1>
+			<blockquote class="blockquote"><%= data.rooms.brief_info %></blockquote>
+			<hr>
+			<dl class="row">
+				<dt class="col-sm-3">Vacant</dt>
+				<dd class="col-sm-9"><%= data.rooms.vacant_count %></dd>
+
+				<dt class="col-sm-3">Owner's contact</dt>
+				<dd class="col-sm-9"><%= data.rooms.contact %></dd>
+			</dl>
+			<hr>
+			<p class=""><%= data.rooms.info %></p>
+			<hr>
+			<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#bookingFormModal">Book</button>
+			<!--  -->
+
+			<!-- Booking request form -->
+			<div class="modal fade" id="bookingFormModal" tabindex="-1" aria-labelledby="bookingFormeModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Send a booking request</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="mb-3">
+								<label for="booking-request-name" class="form-label">Name</label>
+								<input type="name" name="booking-request-name" class="form-control" id="booking-request-name" placeholder="Your name" required>
+							</div>
+							<div class="mb-3">
+								<label for="booking-request-contact" class="form-label">Name</label>
+								<input type="contact" name="booking-request-contact" class="form-control" id="booking-request-contact" placeholder="Your contact number" required>
+							</div>
+							<div class="mb-3">
+								<label for="booking-request-msg" class="form-label">Name</label>
+								<textarea class="form-control" aria-label="Booking request msg" id="booking-request-msg"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-success">Send a booking request</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--  -->
+		</div>
+		<% } %>
+	</div>
+	<!--  -->
+
+	<!-- Scripts requried for boostrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+	<!--  -->
+
+	<!-- Custom required scripts -->
+	<script type="text/javascript" src="/js/room.js"></script>
+	<!--  -->
+</body>
+</html>
