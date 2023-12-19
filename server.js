@@ -83,7 +83,7 @@ App.get("/rooms", (request, response) => {
 				response.status(500);
 				return response.end("Database error!");
 			} else {
-			 	try {
+				try {
 					data.multiple = false;
 					data.rooms = row;
 					data.rooms.media = JSON.parse(data.rooms.media);
@@ -95,7 +95,7 @@ App.get("/rooms", (request, response) => {
 							return response.end("Database error!");
 						} else {
 							// Rendering back the room info to the user
-							data.rooms.booking_requests = row;
+							data.rooms.booking_requests = row[0]["COUNT(*)"];
 							return response.render("room", { data: data });
 						}
 					});
@@ -112,23 +112,30 @@ App.get("/rooms", (request, response) => {
 // Defining the HTTP POST requests endpoints
 //
 App.post('/', (request, response) => {
-	// Checking the task
+	// Getting the user sent information
 	const task = request.body.task;
+	const room_id = request.body.room_id;
+	const customer_name = request.body.customer_name;
+	const customer_contact = request.body.customer_contact;
+	const customer_msg = request.body.customer_msg;
+
+	// Checking the task
 	if (task == "booking request") {
 		// Adding a booking request for the requested room
-		const room_id = request.body.room_id;
-		const customer_name = request.body.customer_name;
-		const customer_contact = requestt.body.customer_contact;
-		const customer_msg = request.body.customer_msg;
 
 		// Checking if the booking request of the same customer exists for the same room
-		DbConn.all("SELECT * FROM booking_requests WHERE room_id = ? AND customer_contact = ?", [room_id, customer_contact], (error, row) => {
+		DbConn.all("SELECT COUNT(*) FROM booking_requests WHERE room_id = ? AND customer_contact = ?", [room_id, customer_contact], (error, row) => {
 			if (error) {
 				// If there occurs an error
 				response.status(500);
 			} else {
+				if (row[0]["COUNT(*)"] != 0) {
+			    // If the booking request already exists
+					return response.end("Booking request already exists!");
+				}
+
 				// Saving the booking request
-				DbConn.run("INSERT INTO booking_request (room_id, customer_name, customer_contact, customer_msg) VALUES (?, ?, ?, ?)", [room_id, customer_name, customer_contact, customer_msg], (error) => {
+				DbConn.run("INSERT INTO booking_requests (room_id, customer_name, customer_contact, msg) VALUES (?, ?, ?, ?)", [room_id, customer_name, customer_contact, customer_msg], (error) => {
 					if (error) {
 						// If there occurs an error
 						response.status(500);
@@ -138,11 +145,9 @@ App.post('/', (request, response) => {
 					}
 				});
 			}
-		})
+		});
 	} else if (task == "contact request") {
 		// Adding the contact request into the database
-		const customer_msg = request.body.customer_msg;
-		const customer_contact = request.body.customer_contact;
 		DbConn.run("INSERT INTO contact_requests (msg, customer_contact) VALUES (?, ?)", [customer_msg, customer_contact], (error) => {
 			if (error) {
 				// If there occurs an error
