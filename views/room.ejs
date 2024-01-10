@@ -95,11 +95,14 @@
 			<blockquote class="blockquote"><%= data.rooms.brief_info %></blockquote>
 			<hr>
 			<dl class="row">
-				<dt class="col-sm-3">Vacant</dt>
-				<dd class="col-sm-9"><%= data.rooms.vacant_count %></dd>
+				<dt class="col-sm-5">Vacant</dt>
+				<dd class="col-sm-7"><%= data.rooms.vacant_count %></dd>
 
-				<dt class="col-sm-3">Owner's contact</dt>
-				<dd class="col-sm-9"><%= data.rooms.contact %></dd>
+				<dt class="col-sm-5">Owner's contact</dt>
+				<dd class="col-sm-7"><%= data.rooms.contact %></dd>
+				
+				<dt class="col-sm-5">Booking requests received</dt>
+				<dd class="col-sm-7"><%= data.rooms.booking_requests %></dd>
 			</dl>
 			<hr>
 			<p class=""><%= data.rooms.info %></p>
@@ -112,26 +115,26 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalLabel">Send a booking request</h1>
+							<h1 class="modal-title fs-5">Send a booking request for <%= data.rooms.name %></h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<div class="mb-3">
-								<label for="booking-request-name" class="form-label">Name</label>
-								<input type="name" name="booking-request-name" class="form-control" id="booking-request-name" placeholder="Your name" required>
+								<label for="send-booking-req-name" class="form-label">Name</label>
+								<input type="name" class="form-control" id="send-booking-req-name" placeholder="Your name" required>
 							</div>
 							<div class="mb-3">
-								<label for="booking-request-contact" class="form-label">Name</label>
-								<input type="contact" name="booking-request-contact" class="form-control" id="booking-request-contact" placeholder="Your contact number" required>
+								<label for="send-booking-req-contact" class="form-label">Name</label>
+								<input type="contact" class="form-control" id="send-booking-req-contact" placeholder="Your contact number" required>
 							</div>
 							<div class="mb-3">
-								<label for="booking-request-msg" class="form-label">Name</label>
-								<textarea class="form-control" aria-label="Booking request msg" id="booking-request-msg"></textarea>
+								<label for="send-booking-req-msg" class="form-label">Name</label>
+								<textarea class="form-control" aria-label="Booking req msg" id="send-booking-req-msg"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-success">Send a booking request</button>
+							<button type="button" class="btn btn-success" id="send-booking-req-btn">Send a booking request</button>
 						</div>
 					</div>
 				</div>
@@ -149,7 +152,10 @@
 	<!--  -->
 
 	<!-- Custom required scripts -->
+	<% if (data.multiple == false) { %>
 	<script type="text/javascript" src="/js/room.js"></script>
+	<script type="text/javascript">const room_id = "<%= data.rooms.id %>";</script>
+	<% } %>
 	<!--  -->
 </body>
 </html>
